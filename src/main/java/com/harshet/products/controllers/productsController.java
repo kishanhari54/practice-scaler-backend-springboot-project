@@ -1,38 +1,45 @@
 package com.harshet.products.controllers;
 
 import com.harshet.products.dto.product;
+import com.harshet.products.interfaces.IProductsService;
+import com.harshet.products.services.ProductsService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("products")
 public class productsController {
-
+    ProductsService productService;
     // Constructor
-    public productsController(){}
+    public productsController(ProductsService productService){
+        this.productService = productService;
+    }
 
     @GetMapping
-    public String getAllProducts(){
-        return "Products Fetched";
+    public List<product> getAllProducts(){
+    return this.productService.getProducts();
     }
 
     @GetMapping("/{id}")
     public product getProductById(@PathVariable("id") Long id){
-        product product = new product();
-        product.setDescription("Take it");
-        return product;
+        return this.productService.getProductById(id);
     }
 
     @PostMapping
     public product createProduct(@RequestBody product request){
-        return new product();
+        return this.productService.createProduct(request);
     }
 
-    @PutMapping
+    @PutMapping("/{id}")
     public product updateProductById(@RequestBody product request , Long id){
-        return new product();
+
+        return this.productService.updateProductById(request,id);
     }
     @DeleteMapping("{id}")
     public boolean deleteProductById(@PathVariable("id") Long id){
-            return true;
+            return this.productService.deleteProductById(id);
     }
 }
