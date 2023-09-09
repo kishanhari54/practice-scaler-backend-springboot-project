@@ -34,7 +34,7 @@ public class productsController {
     }
 
     @PutMapping("/{id}")
-    public product updateProductById(@RequestBody product request , Long id){
+    public product updateProductById(@RequestBody product request , @PathVariable("id") Long id){
 
         return this.productService.updateProductById(request,id);
     }
