@@ -8,6 +8,6 @@ public interface IProductsService {
     public List<product> getProducts();
     public product getProductById(Long id);
     public product updateProductById(product ProductInfo,Long id);
-    public boolean deleteProductById(Long id);
+    public product deleteProductById(Long id);
     public product createProduct(product ProductInfo);
 }

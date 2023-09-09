@@ -1,5 +1,6 @@
 package com.harshet.products.clients.fakeStore.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.harshet.products.clients.fakeStore.dto.fakeStoreProductDTO;
 import com.harshet.products.clients.fakeStore.dto.fakeStoreProductUpdateResponse;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -16,6 +17,7 @@ import java.util.List;
 public class fakeStoreProductService {
 
     private RestTemplate restTemplate;
+    private ObjectMapper objMapper = new ObjectMapper();;
     private String fakeStoreProductsBaseURL = "https://fakestoreapi.com/products";
     private String fakeStoreProductsByID = "https://fakestoreapi.com/products/{id}";
     public fakeStoreProductService(RestTemplateBuilder resttemplateBuilder){
@@ -46,9 +48,14 @@ public class fakeStoreProductService {
     }
 
     public fakeStoreProductDTO  updateProduct(fakeStoreProductDTO product, Long id){
-        HttpHeaders header = new HttpHeaders();
-        HttpEntity entity=   new HttpEntity<>(product,header);
-        ResponseEntity<fakeStoreProductUpdateResponse> response =  restTemplate.exchange(fakeStoreProductsByID, HttpMethod.PUT,entity,fakeStoreProductUpdateResponse.class,id);
-        return   this.getProduct(response.getBody().getId());
+        try {
+            HttpHeaders header = new HttpHeaders();
+            HttpEntity<String> entity = new HttpEntity<>(objMapper.writeValueAsString(product), header);
+            ResponseEntity<fakeStoreProductUpdateResponse> response = restTemplate.exchange(fakeStoreProductsByID, HttpMethod.PUT, entity, fakeStoreProductUpdateResponse.class, id);
+            return this.getProduct(response.getBody().getId());
+        }
+        catch(Exception ex){
+            throw new Error(ex);
+        }
     }
 }
