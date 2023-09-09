@@ -1,6 +1,7 @@
 package com.harshet.products.controllers;
 
 import com.harshet.products.dto.product;
+import com.harshet.products.exceptions.NotFoundException;
 import com.harshet.products.interfaces.IProductsService;
 import com.harshet.products.services.ProductsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,7 @@ public class productsController {
     }
 
     @GetMapping("/{id}")
-    public product getProductById(@PathVariable("id") Long id){
+    public product getProductById(@PathVariable("id") Long id) throws NotFoundException {
         return this.productService.getProductById(id);
     }
 

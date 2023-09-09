@@ -3,6 +3,7 @@ package com.harshet.products.services;
 import com.harshet.products.clients.fakeStore.dto.fakeStoreProductDTO;
 import com.harshet.products.clients.fakeStore.service.fakeStoreProductService;
 import com.harshet.products.dto.product;
+import com.harshet.products.exceptions.NotFoundException;
 import com.harshet.products.interfaces.IProductsService;
 import org.springframework.stereotype.Service;
 
@@ -46,7 +47,7 @@ public class ProductsService implements IProductsService {
     }
 
     @Override
-    public product getProductById(Long id) {
+    public product getProductById(Long id)  throws NotFoundException {
            fakeStoreProductDTO fakeStoreProduct = this.fakeStoreProductService.getProduct(id);
         return this.convertfakeStoreProduct(fakeStoreProduct);
     }
